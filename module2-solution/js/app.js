@@ -1,52 +1,35 @@
 (function(){
   'use strict';
 
-  angular.module('LunchCheck', [])
-  .controller('LunchCheckController', LunchCheckController)
-  .filter('cust', CustomFilterFactory);
+  var prePopulateShoppingList  = [
+    {name: "Chocolate", quantity:10},
+    {name: "cookie", quantity:20},
+    {name: "Peanut Butter", quantity:30},
+    {name: "Pepto Bismol", quantity:40},
+    {name: "Donut", quantity:50}
+  ];
 
-    LunchCheckController.inject = ['$scope', 'custFilter']
-    function LunchCheckController ($scope, custFilter) {
-      $scope.menu = "";     // containing the entered string of menu
-      $scope.message = "";  // message will be showing under the button
-      $scope.customStyle={};
+  angular.module('ShoppingListCheckOff', [])
+  .controller('ShoppingListCheckOffController', ShoppingListCheckOffController)
 
-      $scope.onCheckBtnClick = function() {
-        var inputMenu = $scope.menu;
-        var itemList = [];
+    ShoppingListCheckOffController.inject = ['$scope']
+    function ShoppingListCheckOffController ($scope) {
+      $scope.PRE_MSG_NOTHING_BOUGHT = "Nothing bought yet.";
+      $scope.MSG_EVERYTHING_BOUGHT = "Everything is bought!";
+      $scope.isEmptyBuyList = false;
+      $scope.isEmptyBoughtList = true;
+      $scope.prePopulateList = prePopulateShoppingList;
+      $scope.boughtList = [];
 
-        if(inputMenu == "" || inputMenu == " ") {
-          $scope.message = "Please enter data first";
-          $scope.customStyle.style = {"color":"red"};
-          return;
-        }
+      $scope.toBuy = function(index) {
+        var itemBought = prePopulateShoppingList[index];
+        $scope.boughtList.push(itemBought);
+        $scope.prePopulateList.splice(index, 1);
+        console.log($scope.boughtList);
 
-        itemList = inputMenu.split(',');
-        if (itemList.length <= 3) {
-          $scope.message = "Enjoy!";
-          $scope.customStyle.style = {"color":"blue"};
-        } else {
-          $scope.message = "Too much!";
-          $scope.customStyle.style = {"color":"red"};
-        }
+        if ($scope.prePopulateList.length == 0)
+          $scope.isEmptyBuyList = true;
+        $scope.isEmptyBoughtList = false;
       };
-
-      $scope.displayNumeric = function() {
-        var totalNameValue = calculateNumericForString($scope.name);
-        $scope.totalValue = totalNameValue;
-      };
-
-      $scope.saymessage = function() {
-        return $scope.message;
-      };
-  }
-
-  function CustomFilterFactory() {
-    return function(input){
-      var changedInput = ""
-      return changedInput;
-    };
-  }
-
-
+    }
 })();
