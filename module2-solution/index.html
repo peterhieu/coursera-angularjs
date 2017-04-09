@@ -17,12 +17,19 @@
     <!-- To Buy List -->
     <div class="col-md-6">
      <h2>To Buy:</h2>
-     <ul>
-       <!-- <li>Buy 10 cookies <button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Bought</button></li>
-       <li>Buy 10 cookies <button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Bought</button></li> -->
+     <!-- <ul>
        <li ng-repeat="item in prePopulateList">Buy {{item.quantity}} of {{item.name}}
          <button ng-click="toBuy($index)" class="btn btn-default"> <span class="glyphicon glyphicon-ok"></span> Bought</button></li>
-     </ul>
+     </ul> -->
+     <table>
+       <tr ng-repeat="item in prePopulateList">
+         <td>Buy {{item.quantity}} of {{item.name}}</td>
+           <td>
+              <button ng-click="toBuy($index)" class="btn btn-default"> <span class="glyphicon glyphicon-ok"></span> Bought</button>
+           </td>
+       </tr>
+
+     </table>
 
      <div
         ng-if="isEmptyBuyList"
@@ -36,7 +43,7 @@
      <li ng-repeat="item in boughtList">{{$index + 1}}.  Bought {{item.quantity}} of {{item.name}}
        <!-- <li>Bought 10 cookies</li> -->
      </ul>
-      <div 
+      <div
         ng-if="isEmptyBoughtList"
         class="emptyMessage">{{PRE_MSG_NOTHING_BOUGHT}}</div>
     </div>
