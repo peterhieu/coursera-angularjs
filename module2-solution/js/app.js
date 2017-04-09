@@ -2,13 +2,13 @@
   'use strict';
 
   // I use 2 controllers and 2 services to separate states of views and data
-  // first controller is responsible for displaying the view of pre populate items
   angular.module('ShoppingListCheckOff', [])
   .controller('PrePopulateListController', PrePopulateListController)
   .controller('BoughtListController', BoughtListController)
   .service('PrePopulateListService', PrePopulateListService)
   .service('BoughtListService', BoughtListService);
 
+  // first controller is responsible for displaying the view of pre populate items
   PrePopulateListController.$inject = ['$scope', 'PrePopulateListService', 'BoughtListService']
   function PrePopulateListController ($scope, PrePopulateListService, BoughtListService) {
       var preListCtl = this;
@@ -45,7 +45,6 @@
   // first service is reponsible for preparing prepopulate shopping item list
   function PrePopulateListService() {
     var service1 = this;
-
     var items = [
       {name: "Chocolate", quantity:10},
       {name: "cookie", quantity:20},
@@ -55,7 +54,6 @@
     ];
 
     service1.getItems = function() {
-
       return items;
     };
 
@@ -68,8 +66,8 @@
   // second service is reponsible for updating data which is bought item list
   function BoughtListService() {
     var service = this;
-
     var items = [];
+
     service.addItem = function(itemName, quantity) {
       var item = {
         name: itemName,
