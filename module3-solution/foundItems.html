@@ -2,6 +2,6 @@
 <ul>
   <li ng-repeat="item in $ctrl.items">
   <button ng-click="$ctrl.remove($index);">Don't want this one!</button>
-    {{ item.name }} of {{ item.description }}
+    {{ item.short_name }},  {{ item.name }},  {{ item.description }}
   </li>
 </ul>
