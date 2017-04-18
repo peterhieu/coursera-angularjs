@@ -4,7 +4,8 @@
   angular.module('ItemSearchModule', [])
   .controller('ItemSearchController', ItemSearchController)
   .service('ItemSearchService', ItemSearchService)
-  .constant('ServerDomainPath', "http://davids-restaurant.herokuapp.com");
+  .constant('ServerDomainPath', "http://davids-restaurant.herokuapp.com")
+  .component('foundItems', foundItems);
 
   ItemSearchController.$inject = ['$scope', 'ItemSearchService']
   function ItemSearchController($scope, ItemSearchService) {
@@ -33,8 +34,10 @@
               item.short_name = ItemSearchService.itemList[index].short_name;
               item.description = ItemSearchService.itemList[index].description;
               searchCtl.foundItems.push(item);
+
             }
           }
+      //    console.log(searchCtl.foundItems);
 
       })
       .catch(function (error) {
@@ -42,11 +45,13 @@
       });
     };
 
-    searchCtl.dontWantThisOne = function(index) {
-  //    console.log(index);
+    searchCtl.onRemove = function(index) {
       searchCtl.foundItems.splice(index, 1);
     };
 
+    searchCtl.remove = function (idx) {
+      searchCtl.onRemove({ index: idx });
+    };
   };
 
   ItemSearchService.$inject = ['$http', 'ServerDomainPath'];
@@ -64,6 +69,21 @@
       return response;
     };
 
+  }
+
+  function foundItems() {
+    var directive = {
+      templateUrl: 'foundItems.html',
+      bindings: {
+        message: '@message',
+        foundItems: '<',
+        onRemove: '&'
+      },
+      controller: ItemSearchController,
+      controllerAs: 'searchCtl',
+      bindToController: true
+    };
+    return directive;
   }
 
 })();

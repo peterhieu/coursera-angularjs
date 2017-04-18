@@ -1,0 +1,8 @@
+<h3>{{searchCtl.message}}</h3>
+<ul>
+  <li ng-repeat="item in searchCtl.foundItems">
+      <button ng-click="searchCtl.remove($index)"> Don't want this one</button>
+
+      {{item.name}}, {{item.short_name}}, {{item.description}}
+  </li>
+</ul>
