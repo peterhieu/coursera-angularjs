@@ -3,12 +3,12 @@
 
   angular.module('ItemSearchModule', [])
   .controller('ItemSearchController', ItemSearchController)
-  .service('ItemSearchService', ItemSearchService)
+  .service('SearchListService', SearchListService)
   .constant('ServerDomainPath', "http://davids-restaurant.herokuapp.com")
   .component('foundItems', foundItems);
 
-  ItemSearchController.$inject = ['$scope', 'ItemSearchService']
-  function ItemSearchController($scope, ItemSearchService) {
+  ItemSearchController.$inject = ['$scope', 'SearchListService']
+  function ItemSearchController($scope, SearchListService) {
     var searchCtl = this;
     searchCtl.foundItems = [];
     searchCtl.message = "";
@@ -21,28 +21,8 @@
         return;
       }
 
-      var response = ItemSearchService.requestAllItems();
-
-      response.then(function (responseData) {
-          ItemSearchService.sch = searchCtl.searchStr;
-          ItemSearchService.itemList = responseData.data.menu_items;
-
-          for (var index in ItemSearchService.itemList) {
-            if (ItemSearchService.itemList[index].description.includes(ItemSearchService.sch)) {
-              var item = {};
-              item.name = ItemSearchService.itemList[index].name;
-              item.short_name = ItemSearchService.itemList[index].short_name;
-              item.description = ItemSearchService.itemList[index].description;
-              searchCtl.foundItems.push(item);
-
-            }
-          }
-      //    console.log(searchCtl.foundItems);
-
-      })
-      .catch(function (error) {
-        console.log("Request to web server failed. " + error);
-      });
+      var response = SearchListService.requestAllItems(searchCtl.searchStr);
+      
     };
 
     searchCtl.onRemove = function(index) {
@@ -54,21 +34,44 @@
     };
   };
 
-  ItemSearchService.$inject = ['$http', 'ServerDomainPath'];
-  function ItemSearchService($http, ServerDomainPath) {
-    var service = this;
-    var sch = '';
-    var itemList = [];
-    var foundItems = [];
 
-    service.requestAllItems = function() {
+  SearchListService.$inject = ['$http', 'ServerDomainPath']
+  function SearchListService($http, ServerDomainPath) {
+    var service = this;
+    var itemList = [];
+    var Items = [];
+
+
+    service.requestAllItems = function(sch) {
       var response = $http({
         method: ("GET"),
         url: (ServerDomainPath + "//menu_items.json")
-      });
-      return response;
-    };
+      }).then(function (responseData) {
+          SearchListService.itemList = responseData.data.menu_items;
 
+          if (SearchListService.itemList.length == 0) {
+            searchCtl.foundItems = [];
+            searchCtl.message = "Nothing found";
+          }
+
+          for (var index in SearchListService.itemList) {
+            if (SearchListService.itemList[index].description.includes(sch)) {
+              var item = {};
+              item = {
+                'name': SearchListService.itemList[index].name,
+                'short_name' : SearchListService.itemList[index].short_name,
+                'description' : SearchListService.itemList[index].description,
+              };
+              Items.push(item);
+            }
+          }
+      })
+      .catch(function (error) {
+        console.log("Request to web server failed. " + error);
+      });
+
+      return Items;
+    };
   }
 
   function foundItems() {
@@ -84,6 +87,15 @@
       bindToController: true
     };
     return directive;
+  }
+
+  SearchListFactory.$inject = ['$http', 'ServerDomainPath'];
+  function SearchListFactory($http, ServerDomainPath, maxItems) {
+    var factory = function (maxItems) {
+      return new SearchListService(maxItems);
+    };
+
+    return factory;
   }
 
 })();
