@@ -10,21 +10,37 @@
   </head>
 <body  ng-app='ItemSearchModule'>
    <div class="container"
-   ng-controller='ItemSearchController as searchCtl'>
+    ng-controller='ItemSearchController as searchCtl'>
+
     <h1>Narrow Down Your Chinese Menu Choice</h1>
-
-    <div class="form-group">
-      <input ng-model="searchCtl.searchStr" type="text" placeholder="search term" class="form-control">
-    </div>
-    <div class="form-group narrow-button">
-      <button ng-click="searchCtl.getFoundItems()" class="btn btn-primary">Narrow It Down For Me!</button>
-    </div>
-
+    <table>
+    <tr>
+        <td>
+        <div class="form-group">
+          <input ng-model="searchCtl.searchStr" type="text" placeholder="search term" class="form-control">
+        </div>
+      </td>
+      <td>
+        <div class="form-group narrow-button">
+          <button ng-click="searchCtl.getFoundItems()" class="btn btn-primary">Narrow It Down For Me!</button>
+        </div>
+      </td>
+      </tr>
+    </table>
     <!-- Present the list of found items -->
-    <div>
+    <div class="form-group" >
       <h3>{{searchCtl.message}}</h3>
-      <div
-        ng-repeat="item in searchCtl.foundItems"> {{item}}
+      <div>
+        <table>
+          <tr ng-repeat="item in searchCtl.foundItems">
+              <td>
+                <button ng-click="searchCtl.dontWantThisOne($index)">Don't want this one</button>
+              </td>
+              <td>
+                 {{item.name}}, {{item.short_name}}, {{item.description}}
+              </td>
+          </tr>
+        </table>
       </div>
     </div>
 

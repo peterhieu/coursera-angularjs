@@ -16,60 +16,52 @@
       var search = $scope.searchStr;
 
       if (searchCtl.searchStr == null || searchCtl.searchStr == "") {
-        searchCtl.message = "Please enter item name";
+        searchCtl.message = "Please enter what item you want";
         return;
       }
 
       var response = ItemSearchService.requestAllItems();
 
       response.then(function (responseData) {
-          var allItems = responseData.data.menu_items;
-          searchCtl.foundItems = ItemSearchService.getFoundItems(search, allItems);
+          ItemSearchService.sch = searchCtl.searchStr;
+          ItemSearchService.itemList = responseData.data.menu_items;
 
-          if (searchCtl.foundItems.lenth == 0) {
-            searchCtl.message = "Nothing found";
-          } else {
-            searchCtl.message = "Found";
+          for (var index in ItemSearchService.itemList) {
+            if (ItemSearchService.itemList[index].description.includes(ItemSearchService.sch)) {
+              var item = {};
+              item.name = ItemSearchService.itemList[index].name;
+              item.short_name = ItemSearchService.itemList[index].short_name;
+              item.description = ItemSearchService.itemList[index].description;
+              searchCtl.foundItems.push(item);
+            }
           }
+
       })
       .catch(function (error) {
         console.log("Request to web server failed. " + error);
       });
     };
 
-
-    // searchCtl.isFound = function() {
-    //   if (searchCtl.foundItems.length == 0) {
-    //       searchCtl.message = "Nothing found";
-    //       return false;
-    //   }
-    //   return true;
-    // };
+    searchCtl.dontWantThisOne = function(index) {
+  //    console.log(index);
+      searchCtl.foundItems.splice(index, 1);
+    };
 
   };
 
   ItemSearchService.$inject = ['$http', 'ServerDomainPath'];
   function ItemSearchService($http, ServerDomainPath) {
     var service = this;
+    var sch = '';
+    var itemList = [];
+    var foundItems = [];
 
     service.requestAllItems = function() {
       var response = $http({
         method: ("GET"),
-        url: (ServerDomainPath + "/menu_items.json")
+        url: (ServerDomainPath + "//menu_items.json")
       });
       return response;
-    };
-
-    service.getFoundItems = function(search, itemList) {
-      var foundItems = [];
-      for (var index in itemList) {
-        if (itemList[index].description.includes(search))
-          var item = {menuitem: itemList[index].menu_item,
-          short_name: itemList[index].short_name,
-        short_name: itemList[index].description}
-          foundItems.push(itemList[index].name);
-      }
-      return foundItems;
     };
 
   }
