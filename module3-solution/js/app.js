@@ -1,101 +1,117 @@
-(function() {
-  'use strict';
+(function () {
+'use strict';
 
-  angular.module('ItemSearchModule', [])
-  .controller('ItemSearchController', ItemSearchController)
-  .service('SearchListService', SearchListService)
-  .constant('ServerDomainPath', "http://davids-restaurant.herokuapp.com")
-  .component('foundItems', foundItems);
+angular.module('SearchMenuItemApp', [])
+.controller('SearchMenuItemController', SearchMenuItemController)
+.factory('SearchMenuItemFactory', SearchMenuItemFactory)
+.component('foundItems', {
+  templateUrl: 'foundItems.html',
+  controller: SearchMenuItemComponentController,
+  bindings: {
+    items: '<',
+    message: '@message',
+    onRemove: '&'
+  }
+});
 
-  ItemSearchController.$inject = ['$scope', 'SearchListService']
-  function ItemSearchController($scope, SearchListService) {
-    var searchCtl = this;
-    searchCtl.foundItems = [];
-    searchCtl.message = "";
+SearchMenuItemComponentController.$inject = ['$scope', '$element']
+function SearchMenuItemComponentController($scope, $element) {
+  var $ctrl = this;
 
-    searchCtl.getFoundItems = function() {
-      var search = $scope.searchStr;
+  $ctrl.remove = function (indx) {
+    $ctrl.onRemove({ index: indx });
+  };
+}
 
-      if (searchCtl.searchStr == null || searchCtl.searchStr == "") {
-        searchCtl.message = "Please enter what item you want";
-        return;
-      }
 
-      var response = SearchListService.requestAllItems(searchCtl.searchStr);
-      
-    };
+SearchMenuItemController.$inject = ['SearchMenuItemFactory', '$http'];
+function SearchMenuItemController(SearchMenuItemFactory, $http) {
+  var searchCtl = this;
 
-    searchCtl.onRemove = function(index) {
-      searchCtl.foundItems.splice(index, 1);
-    };
+  var foundList = SearchMenuItemFactory();
 
-    searchCtl.remove = function (idx) {
-      searchCtl.onRemove({ index: idx });
-    };
+  searchCtl.items = SearchMenuItemService.getItems;
+  searchCtl.message = "";
+
+  searchCtl.getFoundItems = function() {
+    if (searchCtl.searchStr == null || searchCtl.searchStr == "") {
+      searchCtl.message = "Please enter what item you want";
+      return;
+    }
+
+
+    var response = $http({
+      method: ("GET"),
+      url: ("http://davids-restaurant.herokuapp.com/menu_items.json")
+    }).then(function (responseData) {
+        var allItemList = responseData.data.menu_items;
+        if (allItemList.length == 0) {
+          searchCtl.items = [];
+          searchCtl.message = "Nothing found";
+        }
+
+        searchCtl.items = [];
+        for (var index in allItemList) {
+          if (allItemList[index].description.includes(searchCtl.searchStr)) {
+            var item = {};
+            item = {
+              'name': allItemList[index].name,
+              'short_name' : allItemList[index].short_name,
+              'description' : allItemList[index].description,
+            };
+
+            searchCtl.items.push(item);
+      //      SearchMenuItemService.addItem(item);
+      //      foundList.addItem(item);
+          }
+        }
+        if (searchCtl.items.length == 0) {
+          searchCtl.items = [];
+          searchCtl.message = "Nothing found";
+        }
+
+        //  searchCtl.items = foundList.getItems;
+    })
+    .catch(function (error) {
+      console.log("Request to web server failed. " + error);
+    });
   };
 
 
-  SearchListService.$inject = ['$http', 'ServerDomainPath']
-  function SearchListService($http, ServerDomainPath) {
-    var service = this;
-    var itemList = [];
-    var Items = [];
+  searchCtl.removeItem = function (itemIndex) {
+//    foundList.removeItem(itemIndex);
+      searchCtl.items.splice(itemIndex, 1);
+  };
+}
 
 
-    service.requestAllItems = function(sch) {
-      var response = $http({
-        method: ("GET"),
-        url: (ServerDomainPath + "//menu_items.json")
-      }).then(function (responseData) {
-          SearchListService.itemList = responseData.data.menu_items;
+// If not specified, maxItems assumed unlimited
+function SearchMenuItemService(maxItems) {
+  var service = this;
 
-          if (SearchListService.itemList.length == 0) {
-            searchCtl.foundItems = [];
-            searchCtl.message = "Nothing found";
-          }
+  // List of shopping items
+  var items = [];
 
-          for (var index in SearchListService.itemList) {
-            if (SearchListService.itemList[index].description.includes(sch)) {
-              var item = {};
-              item = {
-                'name': SearchListService.itemList[index].name,
-                'short_name' : SearchListService.itemList[index].short_name,
-                'description' : SearchListService.itemList[index].description,
-              };
-              Items.push(item);
-            }
-          }
-      })
-      .catch(function (error) {
-        console.log("Request to web server failed. " + error);
-      });
+  service.addItem = function (item) {
+      items.push(item);
+  };
 
-      return Items;
-    };
-  }
+  service.removeItem = function (itemIndex) {
+    items.splice(itemIndex, 1);
+  };
 
-  function foundItems() {
-    var directive = {
-      templateUrl: 'foundItems.html',
-      bindings: {
-        message: '@message',
-        foundItems: '<',
-        onRemove: '&'
-      },
-      controller: ItemSearchController,
-      controllerAs: 'searchCtl',
-      bindToController: true
-    };
-    return directive;
-  }
+  service.getItems = function () {
+    return items;
+  };
+}
 
-  SearchListFactory.$inject = ['$http', 'ServerDomainPath'];
-  function SearchListFactory($http, ServerDomainPath, maxItems) {
-    var factory = function (maxItems) {
-      return new SearchListService(maxItems);
-    };
 
-    return factory;
-  }
+function SearchMenuItemFactory() {
+  var factory = function (maxItems) {
+    return new SearchMenuItemService(maxItems);
+  };
+
+  return factory;
+}
 
 })();

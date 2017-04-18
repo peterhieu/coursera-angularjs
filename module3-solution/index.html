@@ -1,62 +1,48 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html ng-app='SearchMenuItemApp'>
   <head>
-    <title>Narrow Down Your Menu Choice</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles/bootstrap.min.css">
-    <link rel="stylesheet" href="styles/styles.css">
+    <meta charset="utf-8">
+    <script src="js/jquery-3.1.0.min.js"></script>
     <script src="js/angular.min.js"></script>
     <script src="js/app.js"></script>
+    <link rel="stylesheet" href="styles/styles.css">
+    <title>Shopping List With Components</title>
   </head>
-<body  ng-app='ItemSearchModule'>
-   <div class="container"
-    ng-controller='ItemSearchController as searchCtl'>
+  <body>
+<!--    <h1>Shopping List With Components</h1>
 
-    <h1>Narrow Down Your Chinese Menu Choice</h1>
-    <table>
-      <tr>
-        <td>
-          <div class="form-group">
-            <input ng-model="searchCtl.searchStr" type="text" placeholder="search term" class="form-control">
-          </div>
-        </td>
-        <td>
-          <div class="form-group narrow-button">
-            <button ng-click="searchCtl.getFoundItems()" class="btn btn-primary">Narrow It Down For Me!</button>
-          </div>
-        </td>
-      </tr>
-    </table>
+    <div id="list" ng-controller='SearchMenuItemController as list'>
+      <input type="text" ng-model="list.itemName" placeholder="item name">
+      <input type="text" ng-model="list.itemQuantity" placeholder="quantity">
+      <button ng-click="list.addItem();">Add Item</button>
+      <span>{{ list.lastRemoved }}</span>
+-->
+<div class="container"
+ng-controller='SearchMenuItemController as searchCtl'>
 
-    <!-- Present the list of found items -->
-    <div class="form-group" >
-      <h3>{{searchCtl.message}}</h3>
-      <div>
-          <table>
-            <tr ng-repeat="item in searchCtl.foundItems">
-                <td>
-                  <button ng-click="searchCtl.onRemove($index)">Don't want this one</button>
-                </td>
-                <td>
-                  {{item.short_name}},  {{item.name}}, {{item.description}}
-                </td>
-            </tr>
-        </table>
-      </div>
+  <h1>Narrow Down Your Chinese Menu Choice</h1>
+  <table>
+    <tr>
+      <td>
+        <div class="form-group">
+          <input ng-model="searchCtl.searchStr" type="text" placeholder="search term" class="form-control">
+        </div>
+      </td>
+      <td>
+        <div class="form-group narrow-button">
+          <button ng-click="searchCtl.getFoundItems()" class="btn btn-primary">Narrow It Down For Me!</button>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+      <found-items
+        items="searchCtl.items"
+        message="{{searchCtl.message}}"
+        on-remove="searchCtl.removeItem(index)"></found-items>
+
     </div>
 
-    <!-- found-items should be implemented as a component -->
-<!--
-    <found-items
-      message="searchCtl.message"
 
-      found-items="searchCtl.foundItems"
-      on-remove="searchCtl.onRemove(index)"
-
-      >
-  </found-items>
--->
-  </div>
-
-</body>
+  </body>
 </html>
