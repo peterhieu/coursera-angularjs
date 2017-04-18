@@ -34,6 +34,7 @@ function SearchMenuItemController(SearchMenuItemFactory, $http) {
   searchCtl.message = "";
 
   searchCtl.getFoundItems = function() {
+    searchCtl.message = "";
     if (searchCtl.searchStr == null || searchCtl.searchStr == "") {
       searchCtl.message = "Please enter what item you want";
       return;
@@ -45,12 +46,8 @@ function SearchMenuItemController(SearchMenuItemFactory, $http) {
       url: ("http://davids-restaurant.herokuapp.com/menu_items.json")
     }).then(function (responseData) {
         var allItemList = responseData.data.menu_items;
-        if (allItemList.length == 0) {
-          searchCtl.items = [];
-          searchCtl.message = "Nothing found";
-        }
-
         searchCtl.items = [];
+
         for (var index in allItemList) {
           if (allItemList[index].description.includes(searchCtl.searchStr)) {
             var item = {};
