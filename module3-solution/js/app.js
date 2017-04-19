@@ -43,7 +43,7 @@ function SearchMenuItemController(SearchMenuItemFactory, $http) {
 
     var response = $http({
       method: ("GET"),
-      url: ("http://davids-restaurant.herokuapp.com/menu_items.json")
+      url: ("https://davids-restaurant.herokuapp.com/menu_items.json")
     }).then(function (responseData) {
         var allItemList = responseData.data.menu_items;
         searchCtl.items = [];
