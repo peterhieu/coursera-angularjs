@@ -1,0 +1,18 @@
+<!-- <div id="list" ng-controller='MainShoppingListController as mainList'> -->
+  <a ui-sref="home">Home</a> &lt; <span>List</span>
+
+  <h3>Menu Category List</h3>
+  <table>
+    <tr>
+      <td>id</td><td>short_name</td><td>name</td>
+    </tr>
+
+    <tr ui-sref="items" ng-repeat = "category in mainList.categories">
+      <td>{{category.id}}</td>
+      <td>{{category.short_name}} </td>
+      <td>{{category.name}}</td>
+    </tr>
+
+  </table>
+  <items-list items="mainList.items"></items-list>
+<!-- </div> -->
