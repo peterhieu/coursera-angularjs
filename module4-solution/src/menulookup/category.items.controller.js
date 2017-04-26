@@ -10,7 +10,6 @@ function CategoryItemsController(cateogryItems) {
   var $ctrl = this;
 
   $ctrl.items = cateogryItems;
-
 }
 
 })();

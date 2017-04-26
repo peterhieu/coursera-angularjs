@@ -18,6 +18,13 @@ body {
   font-weight: bold;
 }
 
+tr[ui-sref]:hover {
+  cursor:pointer;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: red;
+}
+
 li[ui-sref]:hover {
   display: inline-block;
   cursor:pointer;
@@ -26,11 +33,15 @@ li[ui-sref]:hover {
   color: red;
 }
 
-tr th {
+.heading {
   border:1pt solid black;
   color: red;
   font-weight: bold;
 }
-tr td {
+.itemList {
   border:1pt solid black;
+}
+
+tr td {
+  border-bottom:1pt solid black;
 }

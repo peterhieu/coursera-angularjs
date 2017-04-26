@@ -4,11 +4,11 @@
 
 <h3>Item list in the selected category</h3>
 <table>
-  <tr>
-    <th>short_name</th> <th>name</th><th>description</th>
+  <tr class="heading">
+    <th >short_name</th> <th>name</th><th>description</th>
   </tr>
 
   <tr ng-repeat="item in $ctrl.items">
-    <td> {{ item.short_name }} </td> <td> {{ item.name }}</td> <td>{{ item.description }}</td>
+    <td class="itemList"> {{ item.short_name }} </td> <td class="itemList"> {{ item.name }}</td> <td class="itemList">{{ item.description }}</td>
   </tr>
 </table>

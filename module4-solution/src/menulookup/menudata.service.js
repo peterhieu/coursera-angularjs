@@ -9,10 +9,8 @@ angular.module('menuapp')
 MenuDataService.$inject = ['$http', '$q', '$timeout', 'APIBase']
 function MenuDataService($http, $q, $timeout, APIBase) {
   var service = this;
-
-  // List of shopping items
-  var items = [];
   var categories = [];
+  var items = [];
 
   service.getAllCategories = function() {
     return $http({
@@ -29,12 +27,11 @@ function MenuDataService($http, $q, $timeout, APIBase) {
     return $http({
       method:"GET",
       url: APIBase+"/menu_items.json?category="+short_name
-    }).then (function(returnObj) {       
+    }).then (function(returnObj) {
       items = returnObj.data.menu_items;
       return items;
     });
   };
-
 
 }
 
