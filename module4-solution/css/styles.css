@@ -25,3 +25,12 @@ li[ui-sref]:hover {
   padding-right: 5px;
   color: red;
 }
+
+tr th {
+  border:1pt solid black;
+  color: red;
+  font-weight: bold;
+}
+tr td {
+  border:1pt solid black;
+}
