@@ -2,57 +2,39 @@
 'use strict';
 
 angular.module('menuapp')
-.service('MenuDataService', MenuDataService);
+.service('MenuDataService', MenuDataService)
+.constant('APIBase', "https://davids-restaurant.herokuapp.com");
 
 
-MenuDataService.$inject = ['$http', '$q', '$timeout']
-function MenuDataService($http, $q, $timeout) {
+MenuDataService.$inject = ['$http', '$q', '$timeout', 'APIBase']
+function MenuDataService($http, $q, $timeout, APIBase) {
   var service = this;
 
   // List of shopping items
   var items = [];
   var categories = [];
 
-  // Pre-populate a no cookie list
-  items.push({
-    name: "Sugar",
-    quantity: "2 bags",
-    description: "Sugar used for baking delicious umm... baked goods."
-  });
-  items.push({
-    name: "flour",
-    quantity: "1 bags",
-    description: "High quality wheat flour. Mix it with water, sugar, 2 raw eggs."
-  });
-  items.push({
-    name: "Chocolate Chips",
-    quantity: "3 bags",
-    description: "Put these in the dough. No reason, really. Gotta store them somewhere!"
-  });
-
   service.getAllCategories = function() {
     return $http({
       method:"GET",
-      url: "https://davids-restaurant.herokuapp.com/categories.json"
+      url: APIBase+"/categories.json"
     }).then (function(returnObj) {
       categories = returnObj.data;
       return categories;
     });
   };
 
-  // Simulates call to server
-  // Returns a promise, NOT items array directly
-  service.getItems = function () {
-    var deferred = $q.defer();
 
-    // Wait 2 seconds before returning
-    $timeout(function () {
-      // deferred.reject(items);
-      deferred.resolve(items);
-    }, 800);
-
-    return deferred.promise;
+  service.getItemsForCategory = function(short_name) {
+    return $http({
+      method:"GET",
+      url: APIBase+"/menu_items.json?category="+short_name
+    }).then (function(returnObj) {       
+      items = returnObj.data.menu_items;
+      return items;
+    });
   };
+
 
 }
 

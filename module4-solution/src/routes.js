@@ -28,21 +28,21 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
       categories: ['MenuDataService', function (MenuDataService) {
         return MenuDataService.getAllCategories();
       }]
-}
+    }
 
   })
 
   // items list page
-  .state('items', {
-    url: '/category-list/{itemId}',
-    templateUrl: 'src/shoppinglist/templates/items.template.html',
-    controller: 'ItemListController as itemList',
+  .state('itemsList', {
+    url: '/category-list/{short_name}',
+    templateUrl: 'src/shoppinglist/templates/category-items.template.html',
+    controller: 'CategoryItemsController as $ctrl',
     resolve: {
-      item: ['$stateParams', 'MenuDataService',
+      cateogryItems: ['$stateParams', 'MenuDataService',
             function ($stateParams, MenuDataService) {
-              return MenuDataService.getItemsForCategory(categoryShortName)
+              return MenuDataService.getItemsForCategory($stateParams.short_name)
                 .then(function (items) {
-                  return items[$stateParams.itemId];
+                  return items;
                 });
             }]
     }
