@@ -20,7 +20,7 @@ function SignUpController(signedup, UserService, MenuService) {
         $ctrl.user.favorite = response;
         UserService.signUp($ctrl.user);
         $ctrl.signedup = true;
-        $ctrl.error = {};
+        $ctrl.error.msg = 'Your information has been saved';
       },
       function (error) {
         $ctrl.error.msg = 'No such menu number exists.';

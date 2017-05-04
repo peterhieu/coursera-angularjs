@@ -62,7 +62,6 @@ function routeConfig ($stateProvider) {
           return UserService.signedup();
         }],
         myinfo: ['UserService', function (UserService) {
-          console.log('UserService.getUserInfo');
           return UserService.getUserInfo();
         }]
       }

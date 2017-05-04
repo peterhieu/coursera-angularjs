@@ -10,10 +10,13 @@ function MyInfoController(signedup, myinfo, UserService, MenuService) {
   var myInfoCtrl = this;
   console.log(myinfo);
   myInfoCtrl.myInfo = myinfo;
-  myInfoCtrl.signedup = signedup;
+  myInfoCtrl.isSignedup = function(){
+    if (myInfoCtrl.myInfo.firstName) {
+      return true;
+    }
+    return false;
+  };
   var error = {};
-
-
 }
 
 })();
