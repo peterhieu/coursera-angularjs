@@ -32,13 +32,12 @@
 
         <div class="form-group">
           <label class="control-label col-sm-2" for="favorite">Favorite Dish:</label>
-          <!-- <div class="col-sm-4">
-              {{myInfoCtrl.myInfo.favorite.short_name}}, {{myInfoCtrl.myInfo.favorite.name}}
-          </div> -->
+
           <div class="col-md-3 col-sm-4 col-xs-6 col-xxs-12">
               <div class="category-tile">
                 <img width="200" height="200" ng-src="images/menu/{{myInfoCtrl.myInfo.favorite.category_short_name}}/{{myInfoCtrl.myInfo.favorite.category_short_name}}.jpg" alt="{{myInfoCtrl.myInfo.favorite.name}}">
-                <span>{{myInfoCtrl.myInfo.favorite.name}}</span>
+                <span>{{myInfoCtrl.myInfo.favorite.name}}</span> <br/>
+                <span>{{myInfoCtrl.myInfo.favorite.description}}</span>
               </div>
 
           </div>

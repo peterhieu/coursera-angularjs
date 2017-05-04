@@ -57,7 +57,7 @@
               placeholder="enter email"
               ng-model="signUpCtrl.user.email"
               name="email"
-              >
+              required >
               {{ signupCtrl.user.email }}
             </input>
         </div>
@@ -73,7 +73,9 @@
             <input type="text" class="form-control" id="phone"
               placeholder="phone number ###-###-####"
               ng-model="signUpCtrl.user.phone"
-              name="phone" >
+              name="phone"
+              pattern="(\d{3})-(\d{3})-(\d{4})"
+              required >
               {{ signupCtrl.user.phone }}
             </input>
         </div>
