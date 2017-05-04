@@ -22,10 +22,13 @@ angular.module('common')
     };
 
     service.signUp = function(user) {
+      console.log(user);
       service.user = user;
     };
 
     service.getUserInfo = function() {
+      console.log('service.getUserInfo');
+      console.log(service.user);
       return service.user;
     }
 

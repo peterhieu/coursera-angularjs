@@ -29,9 +29,9 @@ function MenuService($http, ApiPath) {
 
   service.getItem = function (item_shortname) {
       console.log(item_shortname);
-      return $http.get(ApiPath + '/menu_items/'+item_shortname+'.json', config).then(function (response) {
+      return $http.get(ApiPath + '/menu_items/' + item_shortname + '.json')
+        .then(function (response) {
 
-        console.log(response.data);
         return response.data;
       });
   };

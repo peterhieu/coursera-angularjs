@@ -7,7 +7,7 @@
         <div class="col-sm-4">
             <input type="text" class="form-control" id="firstName"
               placeholder="enter first name"
-              ng-model="signupCtrl.user.firstName"
+              ng-model="signUpCtrl.user.firstName"
               name="firstName"
               required
               minlength="4"
@@ -30,7 +30,7 @@
         <div class="col-sm-4">
             <input type="text" class="form-control" id="lastName"
               placeholder="enter last name"
-              ng-model="signupCtrl.user.lastName"
+              ng-model="signUpCtrl.user.lastName"
               name="lastname"
               required
               minlength="4"
@@ -48,14 +48,16 @@
         </span>
     </div>
 
+
+<!-- required -->
     <div class="form-group">
         <label class="control-label col-sm-2" for="email">Email:</label>
         <div class="col-sm-4">
             <input type="email" class="form-control" id="email"
               placeholder="enter email"
-              ng-model="signupCtrl.user.email"
+              ng-model="signUpCtrl.user.email"
               name="email"
-              required>
+              >
               {{ signupCtrl.user.email }}
             </input>
         </div>
@@ -64,14 +66,14 @@
         </span>
     </div>
 
+    <!-- pattern="(\d{3})-(\d{3})-(\d{4})"> -->
     <div class="form-group">
-        <label class="control-label col-sm-2" for="email">Phone:</label>
+        <label class="control-label col-sm-2" for="phone">Phone:</label>
         <div class="col-sm-4">
             <input type="text" class="form-control" id="phone"
               placeholder="phone number ###-###-####"
-              ng-model="signupCtrl.user.phone"
-              name="phone"
-              pattern="(\d{3})-(\d{3})-(\d{4})">
+              ng-model="signUpCtrl.user.phone"
+              name="phone" >
               {{ signupCtrl.user.phone }}
             </input>
         </div>
@@ -87,7 +89,6 @@
               placeholder="Enter favorite dish"
               ng-model="signUpCtrl.user.favorite.short_name"
               name="favorite"
-              required
               ng-disabled="signUpCtrl.signedup">
       </div>
       <span class="alert alert-danger col-sm-5"
@@ -100,7 +101,7 @@
       </span>
     </div>
 
-    <div   class="form-group">
+    <div   ng-if="!signUpCtrl.signedup"    class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button type="submit"
                 class="btn btn-default"

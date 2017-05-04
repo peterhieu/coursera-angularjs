@@ -45,10 +45,25 @@ function routeConfig ($stateProvider) {
       url: '/signup',
       templateUrl: 'src/public/signup/signup-form.html',
       controller: 'SignUpController',
-      controllerAs: 'signupCtrl',
+      controllerAs: 'signUpCtrl',
       resolve: {
         signedup: ['UserService', function (UserService) {
           return UserService.signedup();
+        }]
+      }
+    })
+    .state('my-info', {
+      url: '/my-info',
+      templateUrl: 'src/public/my-info/my-info.html',
+      controller: 'MyInfoController',
+      controllerAs: 'myInfoCtrl',
+      resolve: {
+        signedup: ['UserService', function (UserService) {
+          return UserService.signedup();
+        }],
+        myinfo: ['UserService', function (UserService) {
+          console.log('UserService.getUserInfo');
+          return UserService.getUserInfo();
         }]
       }
     });

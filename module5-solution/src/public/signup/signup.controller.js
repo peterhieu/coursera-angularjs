@@ -1,4 +1,5 @@
 (function () {
+"use strict";
 
 angular.module('public')
 .controller('SignUpController', SignUpController);
@@ -6,23 +7,23 @@ angular.module('public')
 
 SignUpController.$inject = ['signedup', 'UserService', 'MenuService'];
 function SignUpController(signedup, UserService, MenuService) {
-  var signupCtrl = this;
-  var user = {};
+  var $ctrl = this;
+  $ctrl.user = {};
+  $ctrl.error = {};
 
-  signupCtrl.signedup = signedup;
+  $ctrl.signedup = signedup;
 
-  signupCtrl.submit = function() {
-    console.log('sumbit');
-    MenuService.getItem(signupCtrl.user.favorite.short_name)
+  $ctrl.submit = function() {
+    MenuService.getItem($ctrl.user.favorite.short_name)
     .then(
       function (response) {
-      signupCtrl.user.favorite = response;
-      UserService.signUp(signupCtrl.user);
-      signupCtrl.signedup = true;
-      signupCtrl.error = {};
-    },
-    function (error) {
-      signupCtrl.error.msg = 'No such menu number exists.';
+        $ctrl.user.favorite = response;
+        UserService.signUp($ctrl.user);
+        $ctrl.signedup = true;
+        $ctrl.error = {};
+      },
+      function (error) {
+        $ctrl.error.msg = 'No such menu number exists.';
     });
   };
 }
